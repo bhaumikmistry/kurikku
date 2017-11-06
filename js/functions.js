@@ -17,7 +17,8 @@ function createDiv(numberOfRows,numberOfCols) {
     newrowElement[i] = document.createElement('div');
     newrowElement[i].className = 'row';
     newrowElement[i].id = ('row'+i);
-    console.log(i)
+    newrowElement[i].style.width = (''+numberOfCols*50+'px');
+    console.log("row->" + i)
     grid.appendChild(newrowElement[i]);
     // add new row to grid div
     colContainer = document.getElementById('row'+i);
@@ -27,10 +28,16 @@ function createDiv(numberOfRows,numberOfCols) {
       var temp=k+1
       newColElement[k] = document.createElement('div');
       newColElement[k].className = 'col';
-      newColElement[k].style.backgroundImage = 'url(img/p1/l0_p'+temp+'.png)';
+      if(temp<=9){
+        newColElement[k].style.backgroundImage = 'url(img/p2/image_part_00'+temp+'.png)';
+      }else if(temp>9 && temp<100){
+        newColElement[k].style.backgroundImage = 'url(img/p2/image_part_0'+temp+'.png)';      
+      }else{
+        newColElement[k].style.backgroundImage = 'url(img/p2/image_part_'+temp+'.png)';
+      }
       newColElement[k].id = ('col'+k);
       newColElement[k].addEventListener('click',bindClick(k))
-      console.log(k)
+      console.log("col->"+k)
       // adding initial angle information 
       $(newColElement[k]).attr("data-angle", "0");
       colContainer.appendChild(newColElement[k]);
@@ -70,7 +77,7 @@ function rotate(k,animation_speed,angleToRotate){
 
 function randomInitialRotation(no_rows,no_cols){
   var divNum = 0;
-  var randomAngleNumber = Math.floor((Math.random() * 4) + 0);
+  
 
   for (divNum; divNum<(no_cols*no_rows); divNum++){
     randomAngleNumber = Math.floor((Math.random() * 4) + 0);
@@ -79,5 +86,5 @@ function randomInitialRotation(no_rows,no_cols){
 
 }
 
-createDiv(4,4);
-randomInitialRotation(4,4);
+createDiv(10,10);
+randomInitialRotation(10,10);
