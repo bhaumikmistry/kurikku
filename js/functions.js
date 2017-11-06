@@ -31,6 +31,8 @@ function createDiv(numberOfRows,numberOfCols) {
       newColElement[k].id = ('col'+k);
       newColElement[k].addEventListener('click',bindClick(k))
       console.log(k)
+      // adding initial angle information 
+      $(newColElement[k]).attr("data-angle", "0");
       colContainer.appendChild(newColElement[k]);
     }
     j=0;
@@ -41,12 +43,41 @@ function createDiv(numberOfRows,numberOfCols) {
 function bindClick(k) {
     return function(){
              console.log("you clicked region number " + newColElement[k].id);
-             rotate(k)
+             rotate(k,200,90)
             };
 }
 
-function rotate(k){
-    newColElement[k].style.transform = 'rotate(90 deg)';
+function rotate(k,animation_speed,angleToRotate){
+
+    var current_angle = +$(newColElement[k]).attr("data-angle");
+    console.log("before angle"+current_angle)
+    current_angle += angleToRotate
+    console.log("before angle"+current_angle)
+    $(newColElement[k]).attr("data-angle", current_angle);
+
+    //rotate
+    $(newColElement[k]).animate({ rotate: current_angle }, {
+                step: function (now, fx) {
+                    $(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
+                    $(this).css('-moz-transform', 'rotate(' + now + 'deg)');
+                    $(this).css('transform', 'rotate(' + now + 'deg)');
+                },
+                duration: animation_speed
+            }, 'linear');
+    console.log("later angle"+current_angle);
+
+}
+
+function randomInitialRotation(no_rows,no_cols){
+  var divNum = 0;
+  var randomAngleNumber = Math.floor((Math.random() * 4) + 0);
+
+  for (divNum; divNum<(no_cols*no_rows); divNum++){
+    randomAngleNumber = Math.floor((Math.random() * 4) + 0);
+    rotate(divNum,1,(randomAngleNumber*90))
+  }
+
 }
 
 createDiv(4,4);
+randomInitialRotation(4,4);
