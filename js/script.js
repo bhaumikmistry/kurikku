@@ -8,7 +8,7 @@ numberOfCols = 10;
  * @param {string} numberOfRows - The number of rows.
  * @param {string} numberOfCols - The number of columns.
  */
-function createDiv(numberOfRows, numberOfCols) {
+function createDiv(numberOfRows, numberOfCols, image_path, image_name, image_extension) {
 
   // initialize vars
   var i = j = k = 0;
@@ -47,6 +47,14 @@ function createDiv(numberOfRows, numberOfCols) {
       } else {
 		   console.log("100th called")
            newColElement[k].style.backgroundImage = 'url(img/p2/image_part_' + img_no + '.png)';
+      newColElement[k] = document.createElement('div');
+      newColElement[k].className = 'col';
+      if (img_no <= 9){
+          newColElement[k].style.backgroundImage = 'url('+image_path+image_name+'_00' + img_no + '.'+image_extension+')';
+      } else if ( 9 < img_no  && img_no < 100) {
+          newColElement[k].style.backgroundImage = 'url('+image_path+image_name+'_0'+ img_no + '.'+image_extension+')';
+      } else {
+          newColElement[k].style.backgroundImage = 'url('+image_path+image_name+ img_no + '.'+image_extension+')';
       }
       newColElement[k].id = ('col' + k);
       newColElement[k].addEventListener('click', bindClick(k))
@@ -123,5 +131,5 @@ function check(){
   } 
 }
 
-createDiv(10,10);
+createDiv(10,10,'img/p2/','image_part','png');
 randomInitialRotation(10,10);
