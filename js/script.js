@@ -1,4 +1,6 @@
 var newColElement = []; // store all col elements
+numberOfRows = 10;
+numberOfCols = 10;
 
 /**
  * Creates div with all rows and columns
@@ -35,13 +37,15 @@ function createDiv(numberOfRows, numberOfCols) {
       k = numberOfRows * i + j
 	  // image selector variable (since cols start with zero indices but images are named starting 1)
       var img_no = k + 1
+	  console.log("img_no" + img_no)
       newColElement[k] = document.createElement('div');
       newColElement[k].className = 'col';
       if (img_no <= 9){
           newColElement[k].style.backgroundImage = 'url(img/p2/image_part_00' + img_no + '.png)';
-      } else if ( 9 < img_no < 100) {
+      } else if ( 9 < img_no && img_no < 100) {
           newColElement[k].style.backgroundImage = 'url(img/p2/image_part_0' + img_no + '.png)';      
       } else {
+		   console.log("100th called")
            newColElement[k].style.backgroundImage = 'url(img/p2/image_part_' + img_no + '.png)';
       }
       newColElement[k].id = ('col' + k);
@@ -92,8 +96,31 @@ function randomInitialRotation(no_rows, no_cols){
 
   for (divNum; divNum < (no_cols*no_rows); divNum++){
     randomAngleNumber = Math.floor((Math.random() * 4) + 0);
+	console.log("random angle" + randomAngleNumber)
+    $(newColElement[divNum]).attr("initial-offset", randomAngleNumber); 
     rotate(divNum, 1 , (randomAngleNumber*90))
   }
+}
+
+function check(){
+  var divNum = 0;
+  var res = 0
+  for (divNum; divNum < (numberOfCols*numberOfRows); divNum++){
+    var current_angle = +$(newColElement[divNum]).attr("data-angle");
+    var offset = +$(newColElement[divNum]).attr("initial-offset");
+	if (Math.abs(((current_angle%360)/90) - offset) == offset ) {
+		console.log("okay -> " + divNum);
+	} else {
+	  res += 1;
+	}
+  }
+  console.log("res:" + res)
+  if (res > 0){
+   alert ("Nope, Not Yet");
+  }
+  if (res == 0){
+   alert ("Yeay, You did it");
+  } 
 }
 
 createDiv(10,10);
