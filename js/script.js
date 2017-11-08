@@ -41,15 +41,6 @@ function createDiv(numberOfRows, numberOfCols, image_path, image_name, image_ext
       newColElement[k] = document.createElement('div');
       newColElement[k].className = 'col';
       if (img_no <= 9){
-          newColElement[k].style.backgroundImage = 'url(img/p2/image_part_00' + img_no + '.png)';
-      } else if ( 9 < img_no && img_no < 100) {
-          newColElement[k].style.backgroundImage = 'url(img/p2/image_part_0' + img_no + '.png)';      
-      } else {
-		   console.log("100th called")
-           newColElement[k].style.backgroundImage = 'url(img/p2/image_part_' + img_no + '.png)';
-      newColElement[k] = document.createElement('div');
-      newColElement[k].className = 'col';
-      if (img_no <= 9){
           newColElement[k].style.backgroundImage = 'url('+image_path+image_name+'_00' + img_no + '.'+image_extension+')';
       } else if ( 9 < img_no  && img_no < 100) {
           newColElement[k].style.backgroundImage = 'url('+image_path+image_name+'_0'+ img_no + '.'+image_extension+')';
@@ -122,7 +113,7 @@ function check(){
 	  res += 1;
 	}
   }
-  console.log("res:" + res)
+  console.log("res:" + res);
   if (res > 0){
    alert ("Nope, Not Yet");
   }
