@@ -122,5 +122,40 @@ function check(){
   } 
 }
 
+/**
+ * Funtion to empty the grid to remake the new image
+ */
+function emptygrid(){
+    var myNode = document.getElementById('grid');
+    var fc = myNode.firstChild;
+
+    while( fc ) {
+        myNode.removeChild( fc );
+        fc = myNode.firstChild;
+    }
+}
+
+var switch_image = 0;
+function next(){
+
+    switch(switch_image){
+        case 0:
+            emptygrid()
+            createDiv(10,10,'img/p2/','image_part','png');
+            randomInitialRotation(10,10);
+            switch_image=1;
+            break;
+        case 1:
+            emptygrid()
+            createDiv(4,4,'img/p1/','image_part','png')
+            randomInitialRotation(4,4);
+            switch_image=0;
+            break;
+    }
+    
+}
+
+
+
 createDiv(10,10,'img/p2/','image_part','png');
 randomInitialRotation(10,10);
