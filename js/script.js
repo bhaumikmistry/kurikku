@@ -45,7 +45,7 @@ function createDiv(numberOfRows, numberOfCols, image_path, image_name, image_ext
       } else if ( 9 < img_no  && img_no < 100) {
           newColElement[k].style.backgroundImage = 'url('+image_path+image_name+'_0'+ img_no + '.'+image_extension+')';
       } else {
-          newColElement[k].style.backgroundImage = 'url('+image_path+image_name+ img_no + '.'+image_extension+')';
+          newColElement[k].style.backgroundImage = 'url('+image_path+image_name+'_'+ img_no + '.'+image_extension+')';
       }
       newColElement[k].id = ('col' + k);
       newColElement[k].addEventListener('click', bindClick(k))
