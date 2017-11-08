@@ -27,11 +27,11 @@
   width: 400px;
   height: 100px;
   float: left;
-  background-color: green; }
+  background-color: white; }
 
 .col-lg {
   width: 100px;
   height: 100px;
   float: left;
   opacity: 0.5;
-  background-color: black; }
+  background-color: white; }

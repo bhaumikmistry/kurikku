@@ -135,7 +135,7 @@ function emptygrid(){
     }
 }
 
-var switch_image = 0;
+var switch_image = 1;
 function next(){
 
     switch(switch_image){
@@ -149,6 +149,12 @@ function next(){
             emptygrid()
             createDiv(4,4,'img/p1/','image_part','png')
             randomInitialRotation(4,4);
+            switch_image=2;
+            break;
+        case 2:
+            emptygrid()
+            createDiv(6,6,'img/p3/','image_part','png')
+            randomInitialRotation(6,6);
             switch_image=0;
             break;
     }
