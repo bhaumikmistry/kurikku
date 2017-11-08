@@ -1,3 +1,5 @@
+$(document).ready(function() {
+
 var newColElement = []; // store all col elements
 numberOfRows = 10;
 numberOfCols = 10;
@@ -15,10 +17,10 @@ function createDiv(numberOfRows, numberOfCols, image_path, image_name, image_ext
   var newrowElement = []; // store all row elements
 
   // grab the main div that can contain all rows
-  var grid = document.getElementById('grid');
+  var grid = $('#grid')[0];
 
   // To put all the cols in respective 
-  var colContainer = document.getElementById('grid');
+  var colContainer = $('#grid');
 
   // add rows
   for (i = 0; i < numberOfRows; i++) {
@@ -26,18 +28,16 @@ function createDiv(numberOfRows, numberOfCols, image_path, image_name, image_ext
     newrowElement[i].className = 'row';
     newrowElement[i].id = ('row' + i);
     newrowElement[i].style.width = ('' + numberOfCols*50 + 'px');
-    console.log("row->" + i)
     // add newly created row to grid div
     grid.appendChild(newrowElement[i]);
     // grab the newly created row that can contain col blocks
-    colContainer = document.getElementById('row'+i);
+    colContainer = $('#row'+i)[0];
     // add cols to the newly created row
     for (j = 0; j < numberOfCols; j++){
 	  // convert 2d array into 1d to assign images for each col block
       k = numberOfRows * i + j
 	  // image selector variable (since cols start with zero indices but images are named starting 1)
       var img_no = k + 1
-	  console.log("img_no" + img_no)
       newColElement[k] = document.createElement('div');
       newColElement[k].className = 'col';
       if (img_no <= 9){
@@ -49,7 +49,6 @@ function createDiv(numberOfRows, numberOfCols, image_path, image_name, image_ext
       }
       newColElement[k].id = ('col' + k);
       newColElement[k].addEventListener('click', bindClick(k))
-      console.log("col->"+k)
       // set initial angle information 
       $(newColElement[k]).attr("data-angle", "0");
       colContainer.appendChild(newColElement[k]);
@@ -101,7 +100,7 @@ function randomInitialRotation(no_rows, no_cols){
   }
 }
 
-function check(){
+$('#checkres').click(function(){
   var divNum = 0;
   var res = 0
   for (divNum; divNum < (numberOfCols*numberOfRows); divNum++){
@@ -113,20 +112,20 @@ function check(){
 	  res += 1;
 	}
   }
-  console.log("res:" + res);
+  //console.log("res:" + res);
   if (res > 0){
    alert ("Nope, Not Yet");
   }
   if (res == 0){
    alert ("Yeay, You did it");
   } 
-}
+});
 
 /**
  * Funtion to empty the grid to remake the new image
  */
 function emptygrid(){
-    var myNode = document.getElementById('grid');
+	var myNode = $('#grid')[0];
     var fc = myNode.firstChild;
 
     while( fc ) {
@@ -135,8 +134,8 @@ function emptygrid(){
     }
 }
 
-var switch_image = 0;
-function next(){
+var switch_image = 1;
+$('#nextres').click(function(){
 
     switch(switch_image){
         case 0:
@@ -153,9 +152,10 @@ function next(){
             break;
     }
     
-}
+});
 
 
 
 createDiv(10,10,'img/p2/','image_part','png');
 randomInitialRotation(10,10);
+});
