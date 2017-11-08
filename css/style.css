@@ -5,10 +5,9 @@
   margin-top: 10px; }
 
 .row {
-  width: 200px;
   height: 50px;
   float: left;
-  background-color: red; }
+  background-color: white; }
 
 .col {
   width: 50px;
@@ -16,7 +15,7 @@
   float: left;
   background-size: 100% 100%;
   background-object-fit: fill;
-  background-image: url(/img/p1/l0_p1.png); }
+  background-image: url(../img/p1/l0_p1.png); }
 
 .grid-lg {
   width: 400px;
