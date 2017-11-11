@@ -1,4 +1,5 @@
 var newColElement = []; // store all col elements
+var arrayOfAngleCheck = [];
 numberOfRows = 10;
 numberOfCols = 10;
 
@@ -122,13 +123,51 @@ function check(){
   } 
 }
 
+function check_with_correction(){
+  var divNum = 0;
+  var res = 0
+  for (divNum; divNum < (numberOfCols*numberOfRows); divNum++){
+    var current_angle = +$(newColElement[divNum]).attr("data-angle");
+    var offset = +$(newColElement[divNum]).attr("initial-offset");
+    // To check what kind of tile it is 
+        //-> symatric 1
+        //-> identical 2
+        //-> empty 2
+        //-> unique 0
+    var tile_state = arrayOfAngleCheck[divNum];
+    if (tile_state == 0){
+        if ((Math.abs(current_angle%360)) == 0) {
+            console.log(tile_state)
+            res+=1;
+            //No need to go through all if one is wrong.
+            break;
+        }
+    }else if(tile_state == 1){
+        if ((Math.abs(current_angle%180)) == 0) {
+            res+=1;
+            //No need to go through all if one is wrong.
+            break;
+        }
+    }
+  }
+  console.log("res:" + res);
+  if (res > 0){
+   alert ("Nope, Not Yet");
+  }
+  if (res == 0){
+   alert ("Yeay, You did it");
+  } 
+}
+
+
 /**
  * Funtion to empty the grid to remake the new image
  */
 function emptygrid(){
     var myNode = document.getElementById('grid');
     var fc = myNode.firstChild;
-
+    // "Jab tak grid me child rahega
+    // tab tak while me jaan rahega" -baba bhaumik
     while( fc ) {
         myNode.removeChild( fc );
         fc = myNode.firstChild;
@@ -155,7 +194,14 @@ function next(){
             emptygrid()
             createDiv(6,6,'img/p3/','image_part','png')
             randomInitialRotation(6,6);
-            switch_image=0;
+            arrayOfAngleCheck = [
+                0,0,0,0,1,0,
+                0,2,2,2,0,1,
+                0,1,0,0,0,0,
+                0,0,0,0,0,0,
+                0,0,0,0,0,1,
+                0,1,0,0,1,0 ]
+            switch_image=1;
             break;
     }
     
@@ -163,5 +209,5 @@ function next(){
 
 
 
-createDiv(10,10,'img/p2/','image_part','png');
-randomInitialRotation(10,10);
+createDiv(4,4,'img/p1/','image_part','png');
+randomInitialRotation(4,4);
