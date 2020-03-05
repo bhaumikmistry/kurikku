@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
 var newColElement = []; // store all col elements
+var arrayOfAngleCheck = [];
 numberOfRows = 10;
 numberOfCols = 10;
 
@@ -121,13 +122,51 @@ $('#checkres').click(function(){
   } 
 });
 
+function check_with_correction(){
+  var divNum = 0;
+  var res = 0
+  for (divNum; divNum < (numberOfCols*numberOfRows); divNum++){
+    var current_angle = +$(newColElement[divNum]).attr("data-angle");
+    var offset = +$(newColElement[divNum]).attr("initial-offset");
+    // To check what kind of tile it is 
+        //-> symatric 1
+        //-> identical 2
+        //-> empty 2
+        //-> unique 0
+    var tile_state = arrayOfAngleCheck[divNum];
+    if (tile_state == 0){
+        if ((Math.abs(current_angle%360)) == 0) {
+            console.log(tile_state)
+            res+=1;
+            //No need to go through all if one is wrong.
+            break;
+        }
+    }else if(tile_state == 1){
+        if ((Math.abs(current_angle%180)) == 0) {
+            res+=1;
+            //No need to go through all if one is wrong.
+            break;
+        }
+    }
+  }
+  console.log("res:" + res);
+  if (res > 0){
+   alert ("Nope, Not Yet");
+  }
+  if (res == 0){
+   alert ("Yeay, You did it");
+  } 
+}
+
+
 /**
  * Funtion to empty the grid to remake the new image
  */
 function emptygrid(){
 	var myNode = $('#grid')[0];
     var fc = myNode.firstChild;
-
+    // "Jab tak grid me child rahega
+    // tab tak while me jaan rahega" -baba bhaumik
     while( fc ) {
         myNode.removeChild( fc );
         fc = myNode.firstChild;
@@ -135,8 +174,8 @@ function emptygrid(){
 }
 
 var switch_image = 1;
-$('#nextres').click(function(){
 
+$('#nextres').click(function(){
     switch(switch_image){
         case 0:
             emptygrid()
@@ -148,7 +187,20 @@ $('#nextres').click(function(){
             emptygrid()
             createDiv(4,4,'img/p1/','image_part','png')
             randomInitialRotation(4,4);
-            switch_image=0;
+            switch_image=2;
+            break;
+        case 2:
+            emptygrid()
+            createDiv(6,6,'img/p3/','image_part','png')
+            randomInitialRotation(6,6);
+            arrayOfAngleCheck = [
+                0,0,0,0,1,0,
+                0,2,2,2,0,1,
+                0,1,0,0,0,0,
+                0,0,0,0,0,0,
+                0,0,0,0,0,1,
+                0,1,0,0,1,0 ]
+            switch_image=1;
             break;
     }
     
