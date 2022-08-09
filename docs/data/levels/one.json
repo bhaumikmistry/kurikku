@@ -1,14 +1,14 @@
 {
     "3-4":{
-        "img":"name",
+        "img":"src/start_end_180.png",
         "correct":1
     },
     "4-4":{
-        "img":"name",
+        "img":"src/straight_0.png",
         "correct":1
     },
     "5-4":{
-        "img":"name",
+        "img":"src/start_end_90.png",
         "correct":1
     }
 }
