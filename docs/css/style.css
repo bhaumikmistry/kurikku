@@ -42,6 +42,10 @@ body {
   height: 100%;
 }
 
+.bckcolor {
+  background-color: #98fb987c;
+}
+
 .row {
   display: -ms-flexbox; /* IE 10 */
   display: flex;

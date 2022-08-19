@@ -85,6 +85,24 @@ function loadNewLevel(){
   var level;
 }
 
+angle_data = {};
+rotation_data = {};
+let all_angles = [0,90,180,270]
+let angles = [90,180,270]
+
+function validate_result() {
+  let values = Object.values(rotation_data);
+  res = values.reduce(function(acc, val) { return acc + val; }, 0)
+  console.log(res)
+  if (res == 0){
+    if ( !document.getElementById("row-parent").classList.contains('bckcolor') ){
+      document.getElementById('row-parent').classList.add('bckcolor');
+    }
+  }else{
+    document.getElementById('row-parent').classList.remove('bckcolor');
+  }
+}
+
 function addElement(data) {
 
   console.log("addElement()");
@@ -97,29 +115,61 @@ function addElement(data) {
     var columniDiv = document.createElement('div');
     columniDiv.id = 'column_'+i;
     columniDiv.className = 'column';
+    
 
     for (var j = 0; j < 9; j++) {
-      // console.log(i,j);    
-      // var pixelIDiv = document.createElement('div');
       // pixelIDiv.id = 'row_'+j;
       key = i+'-'+j;
-      console.log(key);
       if (key in data){
         img_src = data[key].img;
       } else {
         img_src = "src/empty_cell.png";
       }
-    
       var img = document.createElement('img');
       img.src = img_src;
       img.title = 'col'+i+'_row'+j;
       img.style = "width:100%";
+      if (key in data){
+
+        var item = angles[Math.floor(Math.random()*angles.length)];
+        angle_data['col'+i+'_row'+j] = item;
+        img.style.transform = 'rotate(' + item + 'deg)';
+
+        var rotation = all_angles.indexOf(item);
+        rotation_data['col'+i+'_row'+j] = rotation;
+
+        img.onclick = function(event){
+          console.log(event.target.title);
+          var angle = (angle_data[event.target.title]) + 90 || 90;
+          
+          event.target.style.transform = 'rotate(' + angle + 'deg)';
+          event.target.style.transition = 'all 0.6s ease';
+          angle_data[event.target.title] = angle;
+          console.log(angle_data);
+
+          let old_rotation = rotation_data[event.target.title];
+          new_rotation = old_rotation+1;
+          if (new_rotation>=4){
+            new_rotation=0
+          }
+          rotation_data[event.target.title]=new_rotation
+
+          console.log(rotation_data);
+
+          validate_result();
+
+        }
+      }
     
       // pixelIDiv.appendChild(img);
       columniDiv.appendChild(img);
     }
     document.getElementById('holder').appendChild(columniDiv);
   }
+
+  console.log(angle_data);
+  console.log(rotation_data);
+  console.log("--init()--")
 
   var iDiv2 = document.createElement('div');
   iDiv2.id = 'outerblock';
