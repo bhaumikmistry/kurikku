@@ -85,7 +85,7 @@ class Levels{
   }
 
   get_current_level() {
-    return this.current_lelvel
+    return this.current_level
   }
 
   complete_current_level(){
@@ -121,7 +121,7 @@ class Gameplay{
     console.log("get_data() Level=")
     console.log(level);
     var level_prefix = 'https://raw.githubusercontent.com/bhaumikmistry/kurikku/hold-multiple-images/docs/data/levels/'
-    var link = level_prefix + one +'.json'
+    var link = level_prefix + level + '.json'
     return $.getJSON(link).then(function(data){
         return data;
     })
@@ -146,6 +146,7 @@ class Gameplay{
     console.log("start");
 
     let level = this.level.get_current_level();
+    console.log(level);
 
     this.load_data(level).then(
       (data) => {
@@ -197,14 +198,6 @@ class Gameplay{
     let res = values.reduce(function(acc, val) { return acc + val; }, 0)
     console.log(res)
     this.background_color(res==0, data);
-    // if (res == 0){
-    //   this.end_current_level(data);
-    //   if ( !document.getElementById("row-parent").classList.contains('bckcolor') ){
-    //     document.getElementById('row-parent').classList.add('bckcolor');
-    //   }
-    // }else{
-    //   document.getElementById('row-parent').classList.remove('bckcolor');
-    // }
   }
 
   onclickEvent(event){
@@ -255,7 +248,6 @@ class Gameplay{
           img_src = "src/empty_cell.png";
         }
         if (document.getElementById('col'+i+'_row'+j) === null){
-          console.log("creating new block")
           var img = document.createElement('img');
           img.id = 'col'+i+'_row'+j;
           img.title = 'col'+i+'_row'+j;
@@ -263,7 +255,7 @@ class Gameplay{
           columniDiv.appendChild(img);
         }
         var img = document.getElementById('col'+i+'_row'+j);
-        console.log(document.getElementById('col'+i+'_row'+j));
+        img.style.transition = null;
         img.src = img_src;
 
         if (key in data){
@@ -271,9 +263,9 @@ class Gameplay{
           var item = this.angles[Math.floor(Math.random()*this.angles.length)];
           this.angle_data['col'+i+'_row'+j] = item;
           img.style.transform = 'rotate(' + item + 'deg)';
-
           var rotation = this.all_angles.indexOf(item);
           this.rotation_data['col'+i+'_row'+j] = rotation;
+          img.style.transition = 'all 0.6s ease';
 
           img.onclick = this.onclickEvent
         }
@@ -309,6 +301,9 @@ class Gameplay{
   }
 
 }
+
+let btn = document.getElementById('next');
+btn.style.visibility = 'hidden';
 
 console.log("start---")
 const gp = new Gameplay();
