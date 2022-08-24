@@ -77,129 +77,352 @@
 //   location.reload();
 // })
 
-function getCurrentLevel(){
-  return 1;
-}
+class Levels{
 
-function loadNewLevel(){ 
-  var level;
-}
+  constructor(current_level) {
+    this.current_level = current_level;
+    this.current_level_complete = false;
+  }
 
-angle_data = {};
-rotation_data = {};
-let all_angles = [0,90,180,270]
-let angles = [90,180,270]
+  get_current_level() {
+    return this.current_lelvel
+  }
 
-function validate_result() {
-  let values = Object.values(rotation_data);
-  res = values.reduce(function(acc, val) { return acc + val; }, 0)
-  console.log(res)
-  if (res == 0){
-    if ( !document.getElementById("row-parent").classList.contains('bckcolor') ){
-      document.getElementById('row-parent').classList.add('bckcolor');
+  complete_current_level(){
+    this.current_level_complete = true;
+  }
+
+  update_next_level() {
+    this.current_level = this.current_level+1;
+    if (this.current_level === 3) {
+      this.current_level = 1;
     }
-  }else{
-    document.getElementById('row-parent').classList.remove('bckcolor');
+    this.current_level_complete = false;
   }
 }
 
-function addElement(data) {
+class Gameplay{
+  constructor(){
+    this.level = new Levels(1)
+    this.angle_data = {};
+    this.rotation_data = {};
+    this.all_angles = [0,90,180,270]
+    this.angles = [90,180,270]
+    this.data = {};
+  }
 
-  console.log("addElement()");
-  var iDiv = document.createElement('div');
-  iDiv.id = 'outerblock';
-  iDiv.className = 'column';
-  document.getElementById('holder').appendChild(iDiv);
+  reset_level_data(){
+    this.angle_data = {};
+    this.rotation_data = {};
+    this.data = {};
+  }
 
-  for (var i = 0; i < 9; i++) {
-    var columniDiv = document.createElement('div');
-    columniDiv.id = 'column_'+i;
-    columniDiv.className = 'column';
-    
+  get_data(level) {
+    console.log("get_data() Level=")
+    console.log(level);
+    var level_prefix = 'https://raw.githubusercontent.com/bhaumikmistry/kurikku/hold-multiple-images/docs/data/levels/'
+    var link = level_prefix + one +'.json'
+    return $.getJSON(link).then(function(data){
+        return data;
+    })
+  } 
 
-    for (var j = 0; j < 9; j++) {
-      // pixelIDiv.id = 'row_'+j;
-      key = i+'-'+j;
-      if (key in data){
-        img_src = data[key].img;
-      } else {
-        img_src = "src/empty_cell.png";
+  load_new_level(){ 
+    this.level.get_current_level();
+    this.level.update_next_level();
+  }
+
+  load_data(level){
+    return this.get_data(level).then(
+        function (data) {
+          console.log("get_data().then");
+          console.log(data);
+          return data;
+        }
+      );
+  }
+
+  start(){
+    console.log("start");
+
+    let level = this.level.get_current_level();
+
+    this.load_data(level).then(
+      (data) => {
+        let btn = document.getElementById('next');
+        btn.onclick = this.onClicNext;
+        btn.style.visibility = 'hidden';
+        this.data = data;
+        console.log("after promise");
+        this.load_level(data);
       }
-      var img = document.createElement('img');
-      img.src = img_src;
-      img.title = 'col'+i+'_row'+j;
-      img.style = "width:100%";
-      if (key in data){
+    );
+  }
 
-        var item = angles[Math.floor(Math.random()*angles.length)];
-        angle_data['col'+i+'_row'+j] = item;
-        img.style.transform = 'rotate(' + item + 'deg)';
-
-        var rotation = all_angles.indexOf(item);
-        rotation_data['col'+i+'_row'+j] = rotation;
-
-        img.onclick = function(event){
-          console.log(event.target.title);
-          var angle = (angle_data[event.target.title]) + 90 || 90;
-          
-          event.target.style.transform = 'rotate(' + angle + 'deg)';
-          event.target.style.transition = 'all 0.6s ease';
-          angle_data[event.target.title] = angle;
-          console.log(angle_data);
-
-          let old_rotation = rotation_data[event.target.title];
-          new_rotation = old_rotation+1;
-          if (new_rotation>=4){
-            new_rotation=0
-          }
-          rotation_data[event.target.title]=new_rotation
-
-          console.log(rotation_data);
-
-          validate_result();
-
+  disable_current_level_tiles(data){
+    console.log("disable_current_level_tiles()");
+    for (var i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        let key = i+'-'+j;
+        if (key in data){
+          let img = document.getElementById('col'+i+'_row'+j);
+          img.onclick = null;
         }
       }
-    
-      // pixelIDiv.appendChild(img);
-      columniDiv.appendChild(img);
     }
-    document.getElementById('holder').appendChild(columniDiv);
   }
 
-  console.log(angle_data);
-  console.log(rotation_data);
-  console.log("--init()--")
+  end_current_level(data) {
+    console.log("end_current_level()");
+    this.disable_current_level_tiles(data);
+    this.level.complete_current_level();
+    this.setup_next_button();
+  }
 
-  var iDiv2 = document.createElement('div');
-  iDiv2.id = 'outerblock';
-  iDiv2.className = 'column';
+  background_color(state, data) {
+    if (state) {
+      gp.end_current_level(data);
+      if ( !document.getElementById("row-parent").classList.contains('bckcolor') ){
+        let element = document.getElementById('row-parent');
+        element.classList.add('bckcolor');
+        element.style.transition = "background-color 1s";
+      }
+    }else{
+      document.getElementById('row-parent').classList.remove('bckcolor');
+    }
+  }
 
-  // var columniDiv = document.createElement('div');
-  // columniDiv.id = 'column_1'
+  validate_result(data) {
+    let values = Object.values(this.rotation_data);
+    let res = values.reduce(function(acc, val) { return acc + val; }, 0)
+    console.log(res)
+    this.background_color(res==0, data);
+    // if (res == 0){
+    //   this.end_current_level(data);
+    //   if ( !document.getElementById("row-parent").classList.contains('bckcolor') ){
+    //     document.getElementById('row-parent').classList.add('bckcolor');
+    //   }
+    // }else{
+    //   document.getElementById('row-parent').classList.remove('bckcolor');
+    // }
+  }
 
-  // var pixelIDiv = document.createElement('div');
-  // pixelIDiv.id = 'row_1';
+  onclickEvent(event){
+    console.log(event.target.title);
+    var angle = (gp.angle_data[event.target.title]) + 90 || 90;
+    
+    event.target.style.transform = 'rotate(' + angle + 'deg)';
+    event.target.style.transition = 'all 0.6s ease';
+    gp.angle_data[event.target.title] = angle;
+    console.log(gp.angle_data);
 
-  // var img = document.createElement('img');
-  // img.src = "src/empty_cell.png";
-  // img.title = "c1_r1";
+    let old_rotation = gp.rotation_data[event.target.title];
+    let new_rotation = old_rotation+1;
+    if (new_rotation>=4){
+      new_rotation=0
+    }
+    gp.rotation_data[event.target.title]=new_rotation
 
-  // pixelIDiv.appendChild(img);
-  // columniDiv.appendChild(pixelIDiv);
+    console.log(gp.rotation_data);
+    gp.validate_result(gp.data);
+  }
 
-  // // document.getElementsByTagName('body')[0].appendChild(iDiv);
-  // console.log(document.getElementById('holder'));
-  document.getElementById('holder').appendChild(iDiv2);
-  // document.getElementById('holder').appendChild(columniDiv);
+  load_level(data) {
+    console.log("load_level()");
+    if (document.getElementById('outerblockleft') === null){
+      var iDiv = document.createElement('div');
+      iDiv.id = 'outerblockleft';
+      iDiv.className = 'column';
+      document.getElementById('holder').appendChild(iDiv);
+    }
+
+    for (var i = 0; i < 9; i++) {
+      if (document.getElementById('column_'+i) === null){
+        var columniDiv = document.createElement('div');
+        columniDiv.id = 'column_'+i;
+        columniDiv.className = 'column';
+        document.getElementById('holder').appendChild(columniDiv);
+      }
+      var columniDiv = document.getElementById('column_'+i);
+
+      for (var j = 0; j < 9; j++) {
+        // pixelIDiv.id = 'row_'+j;
+        let key = i+'-'+j;
+        let img_src = null;
+        if (key in data){
+          img_src = data[key].img;
+        } else {
+          img_src = "src/empty_cell.png";
+        }
+        if (document.getElementById('col'+i+'_row'+j) === null){
+          console.log("creating new block")
+          var img = document.createElement('img');
+          img.id = 'col'+i+'_row'+j;
+          img.title = 'col'+i+'_row'+j;
+          img.style = "width:100%";
+          columniDiv.appendChild(img);
+        }
+        var img = document.getElementById('col'+i+'_row'+j);
+        console.log(document.getElementById('col'+i+'_row'+j));
+        img.src = img_src;
+
+        if (key in data){
+
+          var item = this.angles[Math.floor(Math.random()*this.angles.length)];
+          this.angle_data['col'+i+'_row'+j] = item;
+          img.style.transform = 'rotate(' + item + 'deg)';
+
+          var rotation = this.all_angles.indexOf(item);
+          this.rotation_data['col'+i+'_row'+j] = rotation;
+
+          img.onclick = this.onclickEvent
+        }
+        // pixelIDiv.appendChild(img);
+      }
+    }
+    console.log(this.angle_data);
+    console.log(this.rotation_data);
+    console.log("--init()--")
+
+    if (document.getElementById('outerblockright') === null){
+      var iDiv2 = document.createElement('div');
+      iDiv2.id = 'outerblockright';
+      iDiv2.className = 'column';
+      document.getElementById('holder').appendChild(iDiv2);
+    }
+  }
+
+  onClicNext(event){
+    console.log("onclickNext()");
+    gp.level.update_next_level();
+    let btn = document.getElementById('next');
+    btn.style.visibility = 'hidden';
+    gp.background_color(false, gp.data);
+    gp.start();
+  }
+
+  setup_next_button() {
+    let btn = document.getElementById('next');
+    btn.onclick = null;
+    btn.onclick = this.onClicNext;
+    btn.style.visibility = 'visible';
+  }
 
 }
 
+console.log("start---")
+const gp = new Gameplay();
+gp.start();
 
-get_data().then(
-  function (data) {
-    console.log("get_data().then");
-    console.log(data);
-    addElement(data);
-  }
-);
+
+
+// function loadNewLevel(){ 
+//   var level;
+// }
+
+// angle_data = {};
+// rotation_data = {};
+// let all_angles = [0,90,180,270]
+// let angles = [90,180,270]
+
+// function disable_current_level_tiles(data){
+//   console.log("disable_current_level_tiles()");
+//   for (var i = 0; i < 9; i++) {
+//     for (var j = 0; j < 9; j++) {
+//       key = i+'-'+j;
+//       if (key in data){
+//         console.log(key);
+//         img = document.getElementById('col'+i+'_row'+j);
+//         img.onclick = null;
+//       }
+//     }
+//   }
+// }
+
+
+
+// function validate_result(data) {
+//   let values = Object.values(rotation_data);
+//   res = values.reduce(function(acc, val) { return acc + val; }, 0)
+//   console.log(res)
+//   if (res == 0){
+//     end_current_level(data);
+//     if ( !document.getElementById("row-parent").classList.contains('bckcolor') ){
+//       document.getElementById('row-parent').classList.add('bckcolor');
+//     }
+//   }else{
+//     document.getElementById('row-parent').classList.remove('bckcolor');
+//   }
+// }
+
+// function load_data_to_level(data) {
+//   console.log("addElement()");
+//   var iDiv = document.createElement('div');
+//   iDiv.id = 'outerblock';
+//   iDiv.className = 'column';
+//   document.getElementById('holder').appendChild(iDiv);
+
+//   for (var i = 0; i < 9; i++) {
+//     var columniDiv = document.createElement('div');
+//     columniDiv.id = 'column_'+i;
+//     columniDiv.className = 'column';
+    
+
+//     for (var j = 0; j < 9; j++) {
+//       // pixelIDiv.id = 'row_'+j;
+//       key = i+'-'+j;
+//       if (key in data){
+//         img_src = data[key].img;
+//       } else {
+//         img_src = "src/empty_cell.png";
+//       }
+//       var img = document.createElement('img');
+//       img.src = img_src;
+//       img.id = 'col'+i+'_row'+j;
+//       img.title = 'col'+i+'_row'+j;
+//       img.style = "width:100%";
+//       if (key in data){
+//         var item = angles[Math.floor(Math.random()*angles.length)];
+//         angle_data['col'+i+'_row'+j] = item;
+//         img.style.transform = 'rotate(' + item + 'deg)';
+
+//         var rotation = all_angles.indexOf(item);
+//         rotation_data['col'+i+'_row'+j] = rotation;
+
+//         img.onclick = function(event){
+//           console.log(event.target.title);
+//           var angle = (angle_data[event.target.title]) + 90 || 90;
+          
+//           event.target.style.transform = 'rotate(' + angle + 'deg)';
+//           event.target.style.transition = 'all 0.6s ease';
+//           angle_data[event.target.title] = angle;
+//           console.log(angle_data);
+
+//           let old_rotation = rotation_data[event.target.title];
+//           new_rotation = old_rotation+1;
+//           if (new_rotation>=4){
+//             new_rotation=0
+//           }
+//           rotation_data[event.target.title]=new_rotation
+
+//           console.log(rotation_data);
+
+//           validate_result(data);
+//         }
+//       }
+//       // pixelIDiv.appendChild(img);
+//       columniDiv.appendChild(img);
+//     }
+//     document.getElementById('holder').appendChild(columniDiv);
+//   }
+//   console.log(angle_data);
+//   console.log(rotation_data);
+//   console.log("--init()--")
+//   var iDiv2 = document.createElement('div');
+//   iDiv2.id = 'outerblock';
+//   iDiv2.className = 'column';
+//   document.getElementById('holder').appendChild(iDiv2);
+// }
+
+
+
