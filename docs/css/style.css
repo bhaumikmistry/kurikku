@@ -204,16 +204,16 @@ body.night-mode {
 }
 
 .column {
-  border-top: solid 5px rgb(125, 125, 125);
-  border-bottom: solid 5px rgb(125, 125, 125);
+  border-top: solid 5px rgb(255, 255, 255);
+  border-bottom: solid 5px rgb(255, 255, 255);
 }
 
 .column:last-child {
-  border-right: solid 5px rgb(125, 125, 125);
+  border-right: solid 5px rgb(255, 255, 255);
 }
 
 .column:first-child {
-  border-left: solid 5px rgb(125, 125, 125);
+  border-left: solid 5px rgb(255, 255, 255);
 }
 
 .contributor {
