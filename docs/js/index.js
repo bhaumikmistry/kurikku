@@ -137,7 +137,7 @@ class Gameplay{
   load_data(level){
     return this.get_data(level).then(
         function (data) {
-          data = {'3-3': {'img': 'src/quarter_0.png'}, '4-3': {'img': 'src/nt_0.png'}, '5-3': {'img': 'src/quarter_270.png'}, '3-4': {'img': 'src/nt_90.png'}, '4-4': {'img': 'src/all.png'}, '5-4': {'img': 'src/nt_270.png'}, '3-5': {'img': 'src/quarter_90.png'}, '4-5': {'img': 'src/nt_180.png'}, '5-5': {'img': 'src/quarter_180.png'}}
+          // data = {'3-3': {'img': 'src/quarter_0.png'}, '4-3': {'img': 'src/nt_0.png'}, '5-3': {'img': 'src/quarter_270.png'}, '3-4': {'img': 'src/nt_90.png'}, '4-4': {'img': 'src/all.png'}, '5-4': {'img': 'src/nt_270.png'}, '3-5': {'img': 'src/quarter_90.png'}, '4-5': {'img': 'src/nt_180.png'}, '5-5': {'img': 'src/quarter_180.png'}}
           console.log("get_data().then");
           console.log(data);
           return data;
