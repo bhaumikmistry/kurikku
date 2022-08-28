@@ -62,7 +62,7 @@ level_four = [
     [0,0,0,0,0,0,0,0,0],
 ]
 
-for x_index, x in enumerate(level_one):
+for x_index, x in enumerate(level_two):
     for y_index, y in enumerate(x):
         if y>0:
             print(f'{y_index}-{x_index}={data[y]}')

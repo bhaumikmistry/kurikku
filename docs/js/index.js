@@ -123,8 +123,9 @@ class Gameplay{
     console.log(level);
     var level_prefix = 'https://raw.githubusercontent.com/bhaumikmistry/kurikku/hold-multiple-images/docs/data/levels/'
     var link = level_prefix + level + '.json';
-    console.log(link);
-    return $.getJSON(link).then(function(data){
+    console.log(link)
+    return $.getJSON("https://raw.githubusercontent.com/bhaumikmistry/kurikku/hold-multiple-images/docs/data/levels/1.json").then(function(data){
+        console.log(data);
         return data;
     })
   } 
