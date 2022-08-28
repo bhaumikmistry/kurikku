@@ -11,28 +11,4 @@
         "img":"src/start_end_0.png",
         "correct":1
     }
-}
-data = {
-    1: "empty_cell.png",
-    2: "start_end_new_0.png",
-    3: "start_end_new_90.png",
-    4: "start_end_new_180.png",
-    5: "start_end_new_270.png",
-    6: "quarter_0.png",
-    7: "quarter_90.png",
-    8: "quarter_180.png",
-    9: "quarter_270.png",
-    10: "right_angle_0.png",
-    11: "right_angle_90.png",
-    12: "right_angle_180.png",
-    13: "right_angle_270.png",
-    14: "straight_0.png",
-    15: "straight_90.png",
-    16: "straight_180.png",
-    17: "straight_270.png",
-    18: "nt_0.png",
-    19: "nt_90.png",
-    20: "nt_180.png",
-    21: "nt_270.png",
-    22: "plus.png"
-}        
+}  

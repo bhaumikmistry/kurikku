@@ -121,7 +121,8 @@ class Gameplay{
     console.log("get_data() Level=")
     console.log(level);
     var level_prefix = 'https://raw.githubusercontent.com/bhaumikmistry/kurikku/hold-multiple-images/docs/data/levels/'
-    var link = level_prefix + level + '.json'
+    var link = level_prefix + level + '.json';
+    console.log(link);
     return $.getJSON(link).then(function(data){
         return data;
     })
@@ -135,7 +136,7 @@ class Gameplay{
   load_data(level){
     return this.get_data(level).then(
         function (data) {
-          data = {'0-2': {'img': 'src/start_end_new_180.png'}, '1-2': {'img': 'src/nt_0.png'}, '2-2': {'img': 'src/start_end_new_0.png'}, '6-2': {'img': 'src/start_end_new_180.png'}, '7-2': {'img': 'src/nt_0.png'}, '8-2': {'img': 'src/start_end_new_0.png'}, '1-3': {'img': 'src/quarter_90.png'}, '2-3': {'img': 'src/quarter_270.png'}, '3-3': {'img': 'src/quarter_0.png'}, '4-3': {'img': 'src/start_end_new_0.png'}, '6-3': {'img': 'src/quarter_0.png'}, '7-3': {'img': 'src/quarter_180.png'}, '2-4': {'img': 'src/nt_90.png'}, '3-4': {'img': 'src/quarter_180.png'}, '5-4': {'img': 'src/quarter_0.png'}, '6-4': {'img': 'src/nt_270.png'}, '1-5': {'img': 'src/quarter_0.png'}, '2-5': {'img': 'src/quarter_180.png'}, '4-5': {'img': 'src/start_end_new_180.png'}, '5-5': {'img': 'src/quarter_180.png'}, '6-5': {'img': 'src/quarter_90.png'}, '7-5': {'img': 'src/quarter_270.png'}, '0-6': {'img': 'src/start_end_new_180.png'}, '1-6': {'img': 'src/nt_180.png'}, '2-6': {'img': 'src/start_end_new_0.png'}, '6-6': {'img': 'src/start_end_new_180.png'}, '7-6': {'img': 'src/nt_180.png'}, '8-6': {'img': 'src/start_end_new_0.png'}}
+          // data = {'0-2': {'img': 'src/start_end_new_180.png'}, '1-2': {'img': 'src/nt_0.png'}, '2-2': {'img': 'src/start_end_new_0.png'}, '6-2': {'img': 'src/start_end_new_180.png'}, '7-2': {'img': 'src/nt_0.png'}, '8-2': {'img': 'src/start_end_new_0.png'}, '1-3': {'img': 'src/quarter_90.png'}, '2-3': {'img': 'src/quarter_270.png'}, '3-3': {'img': 'src/quarter_0.png'}, '4-3': {'img': 'src/start_end_new_0.png'}, '6-3': {'img': 'src/quarter_0.png'}, '7-3': {'img': 'src/quarter_180.png'}, '2-4': {'img': 'src/nt_90.png'}, '3-4': {'img': 'src/quarter_180.png'}, '5-4': {'img': 'src/quarter_0.png'}, '6-4': {'img': 'src/nt_270.png'}, '1-5': {'img': 'src/quarter_0.png'}, '2-5': {'img': 'src/quarter_180.png'}, '4-5': {'img': 'src/start_end_new_180.png'}, '5-5': {'img': 'src/quarter_180.png'}, '6-5': {'img': 'src/quarter_90.png'}, '7-5': {'img': 'src/quarter_270.png'}, '0-6': {'img': 'src/start_end_new_180.png'}, '1-6': {'img': 'src/nt_180.png'}, '2-6': {'img': 'src/start_end_new_0.png'}, '6-6': {'img': 'src/start_end_new_180.png'}, '7-6': {'img': 'src/nt_180.png'}, '8-6': {'img': 'src/start_end_new_0.png'}}
           console.log("get_data().then");
           console.log(data);
           return data;
