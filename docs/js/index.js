@@ -82,6 +82,7 @@ class Levels{
   constructor(current_level) {
     this.current_level = current_level;
     this.current_level_complete = false;
+    this.max_level = 4;
   }
 
   get_current_level() {
@@ -94,7 +95,7 @@ class Levels{
 
   update_next_level() {
     this.current_level = this.current_level+1;
-    if (this.current_level === 3) {
+    if (this.current_level === this.max_level+1) {
       this.current_level = 1;
     }
     this.current_level_complete = false;
@@ -136,7 +137,7 @@ class Gameplay{
   load_data(level){
     return this.get_data(level).then(
         function (data) {
-          // data = {'0-2': {'img': 'src/start_end_new_180.png'}, '1-2': {'img': 'src/nt_0.png'}, '2-2': {'img': 'src/start_end_new_0.png'}, '6-2': {'img': 'src/start_end_new_180.png'}, '7-2': {'img': 'src/nt_0.png'}, '8-2': {'img': 'src/start_end_new_0.png'}, '1-3': {'img': 'src/quarter_90.png'}, '2-3': {'img': 'src/quarter_270.png'}, '3-3': {'img': 'src/quarter_0.png'}, '4-3': {'img': 'src/start_end_new_0.png'}, '6-3': {'img': 'src/quarter_0.png'}, '7-3': {'img': 'src/quarter_180.png'}, '2-4': {'img': 'src/nt_90.png'}, '3-4': {'img': 'src/quarter_180.png'}, '5-4': {'img': 'src/quarter_0.png'}, '6-4': {'img': 'src/nt_270.png'}, '1-5': {'img': 'src/quarter_0.png'}, '2-5': {'img': 'src/quarter_180.png'}, '4-5': {'img': 'src/start_end_new_180.png'}, '5-5': {'img': 'src/quarter_180.png'}, '6-5': {'img': 'src/quarter_90.png'}, '7-5': {'img': 'src/quarter_270.png'}, '0-6': {'img': 'src/start_end_new_180.png'}, '1-6': {'img': 'src/nt_180.png'}, '2-6': {'img': 'src/start_end_new_0.png'}, '6-6': {'img': 'src/start_end_new_180.png'}, '7-6': {'img': 'src/nt_180.png'}, '8-6': {'img': 'src/start_end_new_0.png'}}
+          data = {'3-3': {'img': 'src/quarter_0.png'}, '4-3': {'img': 'src/nt_0.png'}, '5-3': {'img': 'src/quarter_270.png'}, '3-4': {'img': 'src/nt_90.png'}, '4-4': {'img': 'src/all.png'}, '5-4': {'img': 'src/nt_270.png'}, '3-5': {'img': 'src/quarter_90.png'}, '4-5': {'img': 'src/nt_180.png'}, '5-5': {'img': 'src/quarter_180.png'}}
           console.log("get_data().then");
           console.log(data);
           return data;
@@ -155,6 +156,8 @@ class Gameplay{
         let btn = document.getElementById('next');
         btn.onclick = this.onClicNext;
         btn.style.visibility = 'hidden';
+        let btn_level = document.getElementById('level');
+        btn_level.innerText = '#' + level; 
         this.data = data;
         console.log("after promise");
         this.load_level(data);
@@ -260,7 +263,7 @@ class Gameplay{
         img.style.transition = null;
         img.src = img_src;
 
-        if (key in data){
+        if (key in data && img_src !== "src/all.png"){
 
           var item = this.angles[Math.floor(Math.random()*this.angles.length)];
           this.angle_data['col'+i+'_row'+j] = item;

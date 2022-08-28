@@ -187,6 +187,12 @@ body.night-mode {
   transition-duration: 0.4s;
 }
 
+.buttonlevel {
+  background-color: Transparent;
+  color: gray;
+  border: 2px solid gray;
+}
+
 .button1 {
   background-color: Transparent;
   color: gray;
