@@ -356,5 +356,5 @@ gp.get_data("config").then(
 );
 
 // reset levels
-console.log(save_local_level(1));
+// console.log(save_local_level(1));
 // console.log(get_local_level());
